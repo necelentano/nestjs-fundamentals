@@ -1,4 +1,4 @@
-import { Inject, Injectable, NotFoundException } from '@nestjs/common';
+import { Inject, Injectable, NotFoundException, Scope } from '@nestjs/common';
 import { Coffee } from './entities/coffee.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DataSource, Repository } from 'typeorm';
@@ -9,16 +9,17 @@ import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/paginati
 import { Event } from 'src/events/entities/event.entity/event.entity';
 //import { COFFEE_BRANDS } from './coffees.constants';
 
-@Injectable()
+// injection scope by default is Singleton
+// https://docs.nestjs.com/fundamentals/injection-scopes
+@Injectable({ scope: Scope.DEFAULT })
 export class CoffeesService {
   constructor(
     @InjectRepository(Coffee)
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
-    private readonly dataSource: DataSource,
-  ) // @Inject(COFFEE_BRANDS) coffeeBrands: string[],
-  {
+    private readonly dataSource: DataSource, // @Inject(COFFEE_BRANDS) coffeeBrands: string[],
+  ) {
     //console.log(coffeeBrands);
   }
 
