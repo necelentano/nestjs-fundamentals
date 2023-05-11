@@ -7,6 +7,8 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { Flavor } from './entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Event } from 'src/events/entities/event.entity/event.entity';
+import { ConfigService, ConfigType } from '@nestjs/config';
+import coffeesConfig from './config/coffees.config';
 //import { COFFEE_BRANDS } from './coffees.constants';
 
 // injection scope by default is Singleton
@@ -19,8 +21,25 @@ export class CoffeesService {
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
     private readonly dataSource: DataSource, // @Inject(COFFEE_BRANDS) coffeeBrands: string[],
+    //private readonly configService: ConfigService,
+    @Inject(coffeesConfig.KEY)
+    private readonly coffeesConfiguration: ConfigType<typeof coffeesConfig>,
   ) {
     //console.log(coffeeBrands);
+    // const databaseHost = this.configService.get<string>(
+    //   'DATABASE_HOST',
+    //   'localhost',
+    // );
+    // --------------------------------
+    // get host from custom config file config/app/config.ts
+    // const databaseHost = this.configService.get('database.host', 'localhost');
+    // console.log('databaseHost |====>', databaseHost);
+    // ------------Partial Registration--------------------
+    // import coffeesConfig to coffees.module
+    // const coffeesConfig = this.configService.get('coffees.foo');
+    // console.log('coffeesConfig |====>', coffeesConfig);
+    // -------------inject the coffeesConfig namespace directly -----------
+    //console.log('coffeesConfiguration |====>', coffeesConfiguration.foo);
   }
 
   findAll(paginationQuery: PaginationQueryDto) {
