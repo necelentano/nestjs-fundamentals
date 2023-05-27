@@ -19,7 +19,7 @@ import { CreateCoffeeDto } from './dto/create-coffee.dto';
 import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Public } from 'src/common/decorators/public.decorator';
-import { resolve } from 'path';
+import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
 
 //@UsePipes(new ValidationPipe()) - we can use the instance to pass specific configurations, but the best practice is to use a class
 @Controller('coffees')
@@ -45,9 +45,9 @@ export class CoffeesController {
   //   }
 
   @Get(':id')
-  findOne(@Param('id') id: number) {
+  findOne(@Param('id', ParseIntPipe) id: number) {
     //return `This action returns #${id} coffee!`;
-    console.log(typeof id);
+    console.log(id);
     return this.coffeesService.findOne('' + id);
   }
 
