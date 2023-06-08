@@ -20,6 +20,7 @@ import { UpdateCoffeeDto } from './dto/update-coffee.dto';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto/pagination-query.dto';
 import { Public } from 'src/common/decorators/public.decorator';
 import { ParseIntPipe } from 'src/common/pipes/parse-int/parse-int.pipe';
+import { Protocol } from 'src/common/decorators/protocol.decorator';
 
 //@UsePipes(new ValidationPipe()) - we can use the instance to pass specific configurations, but the best practice is to use a class
 @Controller('coffees')
@@ -30,11 +31,15 @@ export class CoffeesController {
   //@SetMetadata('isPublic', true)
   @Public()
   @Get()
-  findAll(@Query() paginationQuery: PaginationQueryDto) {
+  findAll(
+    @Protocol('https') protocol: string,
+    @Query() paginationQuery: PaginationQueryDto,
+  ) {
     // /coffees?limit=20&offset=10
     //const { limit, offset } = paginationQuery;
     // return `This action returns all coffees! Limit: ${limit}, offset: ${offset}`;
     //await new Promise((resolve) => setTimeout(resolve, 5000));
+    console.log(protocol);
     return this.coffeesService.findAll(paginationQuery);
   }
 
